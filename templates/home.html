@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}home page{% endblock %}
+{% block content %}
+<div class="container">
+    <form action="/main" method="POST" enctype='multipart/form-data'>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+            </div>
+            <div class="custom-file">
+                <input name="rootimg" type="file" accept="image/png, image/jpeg" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+            </div>
+        </div>
+        <button type="submit">Submit</button>
+        <img id="img" src="" height="500">
+    </form>
+</div>
+
+
+<script>
+    var imgFile = document.querySelector('#inputGroupFile01');
+    var preview = document.querySelector('#img')
+    imgFile.addEventListener('change', function(){
+        showImg(this)
+    })
+    
+    function showImg(input){
+        var reader;
+        if (input.files && input.files[0]){
+            reader = new FileReader();
+            reader.onload = function(e){
+                preview.setAttribute('src', e.target.result)
+            }
+            reader.readAsDataURL(input.files[0])
+        }
+    }
+</script>
+{% endblock %}

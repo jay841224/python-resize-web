@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}main page{% endblock %}
+{% block content %}
+<div class="container">
+    <form action="/work" method="POST">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input name="width" type="number" class="form-control" placeholder="Width" aria-label="Width"
+                aria-describedby="basic-addon1" max="{{ maxwidth }}">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input name="height" type="number" class="form-control" placeholder="Height" aria-label="Height"
+                aria-describedby="basic-addon1" max="maxheight">
+        </div>
+        <button style="margin-bottom: 10px;" type="submit">Submit</button>
+    </form>
+    <button style="margin-bottom: 10px;" onclick="window.location.href='{{ url_for('home')}}'">重新選擇照片</button>
+    <div class="container" style="background-color: rgb(102, 236, 225);">
+        <h1>Width: {{ maxwidth  }}
+            <span>Height: {{ maxheight }}</span>
+        </h1>
+        <img style="margin: auto; display:block; margin-top: 10px; margin-bottom: 10px;"
+            src="{{ url_for('static', filename= './images/test.jpg',_t=val1) }}" width="50%" alt="你的圖片被外星人劫持了～～" />
+    </div>
+    <div class="container" style="background-color: rgb(202, 248, 214);">
+        {% if outputsize %}
+        <h1>Width: {{ outputsize[0] }}
+            <span>Height: {{ outputsize[1] }}</span>
+        </h1>
+        {% endif %}
+        <a href="{{ url_for('static', filename= './images/output.jpg',_t=val2) }}" download>
+            <img style="margin: auto; display:block;" src="{{ url_for('static', filename= './images/output.jpg',_t=val2) }}"
+                width="{{ outputWidthpersent }}%" alt="choose size you want!">
+        </a>
+        <div class="container" style="text-align: center;">
+            click photo to download~~
+        </div>
+    </div>
+</div>
+{% endblock %}
