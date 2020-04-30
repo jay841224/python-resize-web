@@ -1,5 +1,7 @@
 runtime: python37
 
+env_variables:
+    CLOUD_STORAGE_BUCKET: my-resize-project
 
 handlers:
 # Matches requests to /images/... to files in static/images/...
