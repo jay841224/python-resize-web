@@ -35,7 +35,7 @@ def main():
         # Create a new blob and upload the file's content.
         blob = bucket.blob(rootimg.filename)
         blob.upload_from_string(rootimg.read(),content_type=rootimg.content_type)
-        read = bucket2.get_blob('mico.jpg')
+        read = bucket2.get_blob('/mico.jpg')
         '''
         img = cv2.imread(uploadpath)
         cv2.imwrite(os.path.join(basepath, 'static/images', 'test.jpg'), img) #save image
