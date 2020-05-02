@@ -30,11 +30,12 @@ def main():
 
         # Get the bucket that the file will be uploaded to.
         bucket = gcs.get_bucket(CLOUD_STORAGE_BUCKET)
+        bucket2 = gcs.get_bucket(CLOUD_STORAGE_BUCKET)
 
         # Create a new blob and upload the file's content.
         blob = bucket.blob(rootimg.filename)
         blob.upload_from_string(rootimg.read(),content_type=rootimg.content_type)
-        read = bucket.get_blob('navs.png')
+        read = bucket2.get_blob('mico.jpg')
         '''
         img = cv2.imread(uploadpath)
         cv2.imwrite(os.path.join(basepath, 'static/images', 'test.jpg'), img) #save image
@@ -47,7 +48,7 @@ def main():
         #img = resizeImg()
         return render_template('main.html', val1=time.time(), maxwidth=rootSize[0], maxheight=rootSize[1])
         '''
-        return blob.public_url, read.public_url
+        return read.public_url
     return render_template('home.html')
 
 
