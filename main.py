@@ -48,7 +48,7 @@ def main():
         #img = resizeImg()
         return render_template('main.html', val1=time.time(), maxwidth=rootSize[0], maxheight=rootSize[1])
         '''
-        return read.public_url
+        return render_template('main.html', root_img=read.public_url)
     return render_template('home.html')
 
 
