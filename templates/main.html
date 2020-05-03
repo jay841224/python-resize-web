@@ -33,8 +33,8 @@
             <span>Height: {{ outputsize[1] }}</span>
         </h1>
         {% endif %}
-        <a href="{{ url_for('static', filename= './images/output.jpg',_t=val2) }}" download>
-            <img style="margin: auto; display:block;" src="{{ url_for('static', filename= './images/output.jpg',_t=val2) }}"
+        <a href="{{ download_link }}" download>
+            <img style="margin: auto; display:block;" src="{{ rimg }}"
                 width="{{ outputWidthpersent }}%" alt="choose size you want!">
         </a>
         <div class="container" style="text-align: center;">
