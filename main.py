@@ -7,9 +7,8 @@ import cv2
 import os, time
 import numpy as np
 
-
 app = Flask(__name__)
-CLOUD_STORAGE_BUCKET = os.environ['CLOUD_STORAGE_BUCKET']
+#CLOUD_STORAGE_BUCKET = os.environ['CLOUD_STORAGE_BUCKET']
 app.secret_key = 'jay011089'
 app.permanent_session_lifetime = timedelta(minutes=100)
 app.send_file_max_age_default = timedelta(seconds=1)
@@ -32,8 +31,8 @@ def main():
         gcs = storage.Client()
 
         # Get the bucket that the file will be uploaded to.
-        bucket = gcs.get_bucket(CLOUD_STORAGE_BUCKET)
-        #bucket = gcs.get_bucket('my-resize-project')
+        #bucket = gcs.get_bucket(CLOUD_STORAGE_BUCKET)
+        bucket = gcs.get_bucket('my-resize-project')
 
         # Create a new blob and upload the file's content.
         blob = bucket.blob('{}root.jpg'.format(session['time']))
@@ -70,8 +69,8 @@ def work():
 
         from work_img import resizeImg
         gcs = storage.Client()
-        bucket = gcs.get_bucket(CLOUD_STORAGE_BUCKET)
-        #bucket = gcs.get_bucket('my-resize-project')
+        #bucket = gcs.get_bucket(CLOUD_STORAGE_BUCKET)
+        bucket = gcs.get_bucket('my-resize-project')
         read = bucket.get_blob('{}root.jpg'.format(session['time']))
         rootimg = read.download_as_string()
         nparr = np.fromstring(rootimg, np.uint8)
