@@ -7,6 +7,7 @@ import cv2
 import os, time
 import numpy as np
 
+
 app = Flask(__name__)
 CLOUD_STORAGE_BUCKET = os.environ['CLOUD_STORAGE_BUCKET']
 app.secret_key = 'jay011089'
