@@ -10,7 +10,7 @@ import numpy as np
 app = Flask(__name__)
 CLOUD_STORAGE_BUCKET = os.environ['CLOUD_STORAGE_BUCKET']
 app.secret_key = 'jay011089'
-app.permanent_session_lifetime = timedelta(minutes=600)
+app.permanent_session_lifetime = timedelta(minutes=100)
 app.send_file_max_age_default = timedelta(seconds=1)
 
 
@@ -22,9 +22,10 @@ def home():
 @app.route('/main', methods=['POST', 'GET'])
 def main():
     if request.method == 'POST':
+        t = ''
+        t = t.join(str(time.time()).split('.'))
+        session['time'] = t
         rootimg = request.files.get('rootimg')
-        # basepath = os.path.dirname(__file__) # 當前文件路徑
-        # uploadpath = os.path.join(basepath, 'static/images', 'test.jpg')
 
         # Create a Cloud Storage client.
         gcs = storage.Client()
@@ -34,13 +35,12 @@ def main():
         #bucket = gcs.get_bucket('my-resize-project')
 
         # Create a new blob and upload the file's content.
-        blob = bucket.blob('root.jpg')
+        blob = bucket.blob('{}root.jpg'.format(session['time']))
         blob.upload_from_string(rootimg.read(),content_type=rootimg.content_type)
-        print(type(rootimg.read()))
         
         #read rootimg and get height and width
         bucket = gcs.get_bucket('my-resize-project')
-        read = bucket.get_blob('root.jpg')
+        read = bucket.get_blob('{}root.jpg'.format(session['time']))
         rootimg = read.download_as_string()
         nparr = np.fromstring(rootimg, np.uint8)
         img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
@@ -71,17 +71,16 @@ def work():
         gcs = storage.Client()
         bucket = gcs.get_bucket(CLOUD_STORAGE_BUCKET)
         #bucket = gcs.get_bucket('my-resize-project')
-        read = bucket.get_blob('root.jpg')
+        read = bucket.get_blob('{}root.jpg'.format(session['time']))
         rootimg = read.download_as_string()
         nparr = np.fromstring(rootimg, np.uint8)
         rootimg = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
         rimg = resizeImg(rootimg, width, height)
-        print(type(rimg))
         s, rimg = cv2.imencode('.jpg', rimg)
         rimg = rimg.tobytes()
         bucket = gcs.get_bucket('my-resize-project')
-        blob = bucket.blob('rimg.jpg')
+        blob = bucket.blob('{}rimg.jpg'.format(session['time']))
         blob.upload_from_string(rimg)
 
         return render_template('main.html', val1=time.time(), val2=time.time(), outputWidthpersent=outputWidth,
@@ -89,6 +88,12 @@ def work():
         root_img=read.public_url, rimg=blob.public_url,
         download_link=blob.media_link) #max 限制resize的最大值 不可超出原圖
     return jsonify('false')
+
+
+@app.route('/test')
+def test():
+    print(12345)
+    return '1'
 
 
 if __name__ == '__main__':
